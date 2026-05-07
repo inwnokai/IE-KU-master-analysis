@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์ ป.โท IE มก. vs AI 2028</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+Thai:wght@300;400;600;700;900&display=swap');
+
+  :root {
+    --bg: #060810;
+    --bg2: #0c1020;
+    --bg3: #111828;
+    --border: #1e2d4a;
+    --accent: #00d4ff;
+    --accent2: #ff4d6d;
+    --accent3: #39ff14;
+    --accent4: #ffd60a;
+    --text: #c8d8f0;
+    --muted: #5a7090;
+    --gold: #e8b86d;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans Thai', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* === SCANLINE OVERLAY === */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,212,255,0.015) 2px,
+      rgba(0,212,255,0.015) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 20px;
+  }
+
+  /* === HEADER === */
+  .hero {
+    text-align: center;
+    padding: 48px 20px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(ellipse, rgba(0,212,255,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0.8;
+  }
+
+  .hero h1 {
+    font-size: clamp(24px, 5vw, 44px);
+    font-weight: 900;
+    line-height: 1.2;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .hero h1 span {
+    color: var(--accent);
+    text-shadow: 0 0 30px rgba(0,212,255,0.6);
+  }
+
+  .hero-sub {
+    color: var(--muted);
+    font-size: 13px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* === NAV TABS === */
+  .nav-tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 6px;
+    margin: 24px 0;
+    overflow-x: auto;
+  }
+
+  .nav-tab {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px 16px;
+    background: transparent;
+    border: none;
+    border-radius: 7px;
+    color: var(--muted);
+    font-family: 'Noto Sans Thai', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .nav-tab.active {
+    background: var(--accent);
+    color: #000;
+    box-shadow: 0 0 20px rgba(0,212,255,0.4);
+  }
+
+  .nav-tab:hover:not(.active) {
+    background: var(--bg3);
+    color: var(--text);
+  }
+
+  /* === PANELS === */
+  .panel { display: none; }
+  .panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* === CARDS === */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent);
+  }
+
+  .card.red::before { background: var(--accent2); }
+  .card.green::before { background: var(--accent3); }
+  .card.gold::before { background: var(--accent4); }
+  .card.purple::before { background: #a855f7; }
+
+  .card-title {
+    font-weight: 700;
+    font-size: 15px;
+    color: #fff;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-title .icon {
+    font-size: 18px;
+  }
+
+  /* === GRID === */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+
+  /* === SUBJECT TABLE === */
+  .subject-group {
+    margin-bottom: 20px;
+  }
+
+  .group-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--bg3);
+    border-radius: 8px 8px 0 0;
+    border: 1px solid var(--border);
+    border-bottom: none;
+  }
+
+  .group-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+  }
+
+  .badge-core { background: rgba(0,212,255,0.15); color: var(--accent); border: 1px solid var(--accent); }
+  .badge-elec { background: rgba(168,85,247,0.15); color: #c084fc; border: 1px solid #a855f7; }
+  .badge-thesis { background: rgba(255,214,10,0.15); color: var(--accent4); border: 1px solid var(--accent4); }
+
+  .subject-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-top: none;
+    transition: background 0.15s;
+  }
+
+  .subject-row:last-child { border-radius: 0 0 8px 8px; }
+  .subject-row:hover { background: rgba(0,212,255,0.04); }
+
+  .subject-name { color: var(--text); font-size: 13px; }
+  .subject-code { font-family: 'Space Mono', monospace; color: var(--muted); font-size: 11px; }
+  .credit-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    padding: 2px 8px;
+    background: rgba(0,212,255,0.1);
+    color: var(--accent);
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  /* === AI COMPARISON === */
+  .ai-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ai-row:last-child { border-bottom: none; }
+
+  .skill-human {
+    text-align: right;
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .skill-vs {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-align: center;
+    padding: 4px 8px;
+    background: var(--bg3);
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  .skill-ai {
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .threat-high { color: var(--accent2); }
+  .threat-med { color: var(--accent4); }
+  .threat-low { color: var(--accent3); }
+
+  .threat-bar {
+    height: 4px;
+    border-radius: 2px;
+    margin-top: 4px;
+  }
+
+  .bar-high { background: var(--accent2); width: 90%; }
+  .bar-med { background: var(--accent4); width: 55%; }
+  .bar-low { background: var(--accent3); width: 20%; }
+
+  /* === PRO/CON === */
+  .procon-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+
+  .procon-item:last-child { border-bottom: none; }
+
+  .procon-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .procon-content h4 {
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+    font-size: 14px;
+  }
+
+  .procon-content p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  /* === JOB MARKET === */
+  .job-tier {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px;
+    background: var(--bg3);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    margin-bottom: 10px;
+    transition: border-color 0.2s;
+  }
+
+  .job-tier:hover { border-color: var(--accent); }
+
+  .tier-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 700;
+    width: 80px;
+    text-align: center;
+  }
+
+  .tier-a { background: rgba(57,255,20,0.15); color: var(--accent3); border: 1px solid var(--accent3); }
+  .tier-b { background: rgba(0,212,255,0.15); color: var(--accent); border: 1px solid var(--accent); }
+  .tier-c { background: rgba(255,77,109,0.15); color: var(--accent2); border: 1px solid var(--accent2); }
+
+  .tier-info { flex: 1; }
+  .tier-info h4 { color: #fff; font-weight: 700; font-size: 13px; }
+  .tier-info p { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .tier-salary {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--gold);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* === VERDICT === */
+  .verdict-box {
+    background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(168,85,247,0.08));
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .verdict-box::before {
+    content: 'VERDICT';
+    position: absolute;
+    top: 12px; right: 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    opacity: 0.5;
+  }
+
+  .verdict-box h3 {
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+
+  .verdict-box p {
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.8;
+  }
+
+  /* === STAT CHIPS === */
+  .stats-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .stat-chip {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+  }
+
+  .stat-chip .val {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+  }
+
+  .stat-chip .lbl {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* === SECTION TITLE === */
+  .section-title {
+    font-size: 11px;
+    font-family: 'Space Mono', monospace;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* === RECOMMEND BOX === */
+  .rec-box {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+  }
+
+  .rec-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .rec-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .rec-title { font-weight: 700; color: #fff; font-size: 14px; }
+
+  .rec-box p { color: var(--muted); font-size: 13px; line-height: 1.7; }
+
+  .highlight { color: var(--accent4); font-weight: 600; }
+  .danger { color: var(--accent2); font-weight: 600; }
+  .safe { color: var(--accent3); font-weight: 600; }
+
+  /* === TIMELINE === */
+  .timeline {
+    position: relative;
+    padding-left: 28px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2));
+    border-radius: 2px;
+  }
+
+  .tl-item {
+    position: relative;
+    padding: 0 0 20px;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -24px; top: 4px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg2);
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  .tl-item.danger-point::before { background: var(--accent2); box-shadow: 0 0 8px var(--accent2); }
+  .tl-item.gold-point::before { background: var(--accent4); box-shadow: 0 0 8px var(--accent4); }
+
+  .tl-year {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .tl-item.danger-point .tl-year { color: var(--accent2); }
+  .tl-item.gold-point .tl-year { color: var(--accent4); }
+
+  .tl-content { color: var(--text); font-size: 13px; line-height: 1.6; }
+
+  /* === SCROLL === */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .ai-row { grid-template-columns: 1fr; }
+    .skill-human { text-align: left; }
+    .nav-tab { font-size: 11px; padding: 8px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">// ANALYSIS ENGINE v2028 //</div>
+  <h1>ป.โท <span>IE มก.</span> × AI Disruption</h1>
+  <p class="hero-sub">วิเคราะห์หลักสูตร · เทียบ AI · ตัดสินใจอย่างชาญฉลาด</p>
+</div>
+
+<div class="container">
+
+  <div class="stats-row">
+    <div class="stat-chip">
+      <span class="val">36</span>
+      <span class="lbl">หน่วยกิต (แผน ก)</span>
+    </div>
+    <div class="stat-chip">
+      <span class="val">2</span>
+      <span class="lbl">ปีโดยเฉลี่ย</span>
+    </div>
+    <div class="stat-chip">
+      <span class="val">3</span>
+      <span class="lbl">ทางเลือกหลักสูตร</span>
+    </div>
+    <div class="stat-chip">
+      <span class="val" style="color:var(--accent2)">↑AI</span>
+      <span class="lbl">ความเสี่ยง 3 ปีข้างหน้า</span>
+    </div>
+  </div>
+
+  <!-- NAV TABS -->
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPanel('subjects')">📚 วิชาที่เรียน</button>
+    <button class="nav-tab" onclick="showPanel('ai')">🤖 เทียบ AI 2028</button>
+    <button class="nav-tab" onclick="showPanel('procon')">⚖️ ข้อดี-ข้อเสีย</button>
+    <button class="nav-tab" onclick="showPanel('jobs')">💼 สมัครงาน</button>
+    <button class="nav-tab" onclick="showPanel('verdict')">🎯 คำแนะนำ</button>
+  </div>
+
+  <!-- ===== PANEL 1: SUBJECTS ===== -->
+  <div class="panel active" id="panel-subjects">
+    <p class="section-title">// CURRICULUM BREAKDOWN — วศ.ม. วิศวกรรมอุตสาหการ มก. บางเขน</p>
+
+    <div class="grid-2">
+      <div>
+        <p style="color:var(--muted); font-size:12px; margin-bottom:12px;">📌 หลักสูตรมี 3 แบบ: <strong style="color:#fff">แผน ก ก.1</strong> (วิทยานิพนธ์ล้วน 36 นก.), <strong style="color:#fff">แผน ก ก.2</strong> (เรียน+วิจัย 36 นก.), <strong style="color:#fff">แผน ข</strong> (เรียนอย่างเดียว 36 นก. มีสารนิพนธ์)</p>
+
+        <!-- หมวดวิชาบังคับ -->
+        <div class="subject-group">
+          <div class="group-header">
+            <span class="group-badge badge-core">CORE</span>
+            <span style="color:#fff; font-weight:700; font-size:13px;">วิชาบังคับ (แผน ก ก.2 / แผน ข)</span>
+          </div>
+          <div class="subject-row">
+            <div>
+              <div class="subject-name">สถิติวิศวกรรม</div>
+              <div class="subject-code">01206511 Engineering Statistics</div>
+            </div>
+            <span class="credit-badge">3 นก.</span>
+          </div>
+          <div class="subject-row">
+            <div>
+              <div class="subject-name">การวิจัยการดำเนินงาน</div>
+              <div class="subject-code">01206512 Operations Research</div>
+            </div>
+            <span class="credit-badge">3 นก.</span>
+          </div>
+          <div class="subject-row">
+            <div>
+              <div class="subject-name">การออกแบบและวิเคราะห์การทดลอง</div>
+              <div class="subject-code">01206513 Design & Analysis of Experiments</div>
+            </div>
+            <span class="credit-badge">3 นก.</span>
+          </div>
+          <div class="subject-row">
+            <div>
+              <div class="subject-name">ระบบการผลิตและบริการ</div>
+              <div class="subject-code">01206514 Production & Service Systems</div>
+            </div>
+            <span class="credit-badge">3 นก.</span>
+          </div>
+          <div class="subject-row">
+            <div>
+              <div class="subject-name">ระเบียบวิธีวิจัย</div>
+              <div class="subject-code">01206591 Research Methodology</div>
+            </div>
+            <span class="credit-badge">1 นก.</span>
+          </div>
+        </div>
+
+        <!-- หมวดเลือก -->
+        <div class="subject-group">
+          <div class="group-header">
+            <span class="group-badge badge-elec">ELECTIVE</span>
+            <span style="color:#fff; font-weight:700; font-size:13px;">วิชาเลือก (ตัวอย่าง)</span>
+          </div>
+          <div class="subject-row">
+            <div>
+              <div class="subject-name">การจัดการโซ่อุปทาน</div>
+              <div class="subject-code">Supply Chain Management</div>
+            </div>
+            <span class="credit-badge">3 นก.</span>
+          </div>
+          <div class="subject-row">
+            <div>
+              <div class="subject-name">การจำลองสถานการณ์</div>
+              <div class="subject-code">Simulation</div>
+            </div>
+            <span class="credit-badge">3 นก.</span>
+          </div>
+          <div class="subject-row">
+            <div>
+              <div class="subject-name">Lean Manufacturing / Six Sigma</div>
+              <div class="subject-code">Lean & Quality Management</div>
+            </div>
+            <span class="credit-badge">3 นก.</span>
+          </div>
+          <div class="subject-row">
+            <div>
+              <div class="subject-name">Ergonomics & Human Factors</div>
+              <div class="subject-code">Human Factors Engineering</div>
+            </div>
+            <span class="credit-badge">3 นก.</span>
+          </div>
+          <div class="subject-row">
+            <div>
+              <div class="subject-name">Data Analytics / Machine Learning</div>
+              <div class="subject-code">Industrial Data Science</div>
+            </div>
+            <span class="credit-badge">3 นก.</span>
+          </div>
+          <div class="subject-row">
+            <div>
+              <div class="subject-name">วิศวกรรมความน่าเชื่อถือ</div>
+              <div class="subject-code">Reliability Engineering</div>
+            </div>
+            <span class="credit-badge">3 นก.</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <!-- Thesis -->
+        <div class="subject-group">
+          <div class="group-header">
+            <span class="group-badge badge-thesis">THESIS</span>
+            <span style="color:#fff; font-weight:700; font-size:13px;">วิทยานิพนธ์ / สารนิพนธ์</span>
+          </div>
+          <div class="subject-row">
+            <div>
+              <div class="subject-name">วิทยานิพนธ์ (แผน ก ก.2)</div>
+              <div class="subject-code">Thesis — 12 หน่วยกิต</div>
+            </div>
+            <span class="credit-badge" style="background:rgba(255,214,10,0.1); color:var(--accent4); border-color:var(--accent4)">12 นก.</span>
+          </div>
+          <div class="subject-row">
+            <div>
+              <div class="subject-name">สารนิพนธ์ (แผน ข)</div>
+              <div class="subject-code">Special Problem — 3 หน่วยกิต</div>
+            </div>
+            <span class="credit-badge" style="background:rgba(255,214,10,0.1); color:var(--accent4); border-color:var(--accent4)">3 นก.</span>
+          </div>
+        </div>
+
+        <!-- 3 Programs -->
+        <div class="card" style="margin-top:8px;">
+          <div class="card-title"><span class="icon">🎓</span> 3 หลักสูตร ป.โท ภาควิชา IE มก.</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div style="padding:12px; background:var(--bg3); border-radius:8px; border:1px solid var(--border);">
+              <div style="font-weight:700; color:var(--accent); font-size:13px;">① วศ.ม. วิศวกรรมอุตสาหการ</div>
+              <div style="font-size:12px; color:var(--muted); margin-top:4px;">ภาคปกติ — วิจัยเน้น, ต้องทำ Thesis<br/>เหมาะกับสายวิชาการ/นักวิจัย</div>
+            </div>
+            <div style="padding:12px; background:var(--bg3); border-radius:8px; border:1px solid var(--border);">
+              <div style="font-weight:700; color: #c084fc; font-size:13px;">② วศ.ม. การจัดการวิศวกรรม (ภาคพิเศษ)</div>
+              <div style="font-size:12px; color:var(--muted); margin-top:4px;">EMP — เรียนเสาร์-อาทิตย์<br/>เน้นการบริหาร, เหมาะคนทำงาน</div>
+            </div>
+            <div style="padding:12px; background:var(--bg3); border-radius:8px; border:1px solid var(--border);">
+              <div style="font-weight:700; color:var(--accent4); font-size:13px;">③ วศ.ม. IE&M นานาชาติ</div>
+              <div style="font-size:12px; color:var(--muted); margin-top:4px;">International Program — สอนภาษาอังกฤษ<br/>เหมาะต่อยอดงานต่างประเทศ / EEC</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card gold" style="margin-top:8px;">
+          <div class="card-title"><span class="icon">📊</span> โครงสร้างหน่วยกิต (แผน ก ก.2)</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:13px;">วิชาบังคับ</span>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <div style="height:6px; width:80px; background:var(--accent); border-radius:3px;"></div>
+                <span style="font-family:monospace; font-size:12px; color:var(--accent);">13 นก.</span>
+              </div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:13px;">วิชาเลือก</span>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <div style="height:6px; width:44px; background: #a855f7; border-radius:3px;"></div>
+                <span style="font-family:monospace; font-size:12px; color:#c084fc;">11 นก.</span>
+              </div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:13px;">วิทยานิพนธ์</span>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <div style="height:6px; width:48px; background:var(--accent4); border-radius:3px;"></div>
+                <span style="font-family:monospace; font-size:12px; color:var(--accent4);">12 นก.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PANEL 2: AI COMPARISON ===== -->
+  <div class="panel" id="panel-ai">
+    <p class="section-title">// AI THREAT MATRIX — สิ่งที่เรียน vs สิ่งที่ AI ทำได้ใน 3 ปี (2028)</p>
+
+    <div class="card red" style="margin-bottom:20px; padding:16px;">
+      <div style="display:flex; gap:12px; align-items:center;">
+        <span style="font-size:24px;">⚠️</span>
+        <div>
+          <div style="font-weight:700; color:var(--accent2); font-size:14px;">HIGH DISRUPTION ZONE</div>
+          <div style="color:var(--muted); font-size:12px;">วิชาต่อไปนี้ถูก AI ทำได้ดีใน 3 ปี — ต้องเรียนเพื่อ "เข้าใจ" ไม่ใช่เพื่อ "ทำเอง"</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px;">
+      <div style="display:grid; grid-template-columns: 1fr 80px 1fr; gap:8px; padding:0 0 10px; border-bottom:1px solid var(--border); margin-bottom:10px;">
+        <div style="text-align:right; font-family:monospace; font-size:10px; color:var(--accent); letter-spacing:2px;">มนุษย์ทำ (ปัจจุบัน)</div>
+        <div></div>
+        <div style="font-family:monospace; font-size:10px; color:var(--accent2); letter-spacing:2px;">AI 2028</div>
+      </div>
+
+      <!-- HIGH THREAT -->
+      <div style="font-family:monospace; font-size:10px; color:var(--accent2); letter-spacing:2px; margin-bottom:10px;">── HIGH THREAT ──</div>
+
+      <div class="ai-row">
+        <div class="skill-human">
+          วิเคราะห์สถิติ / ANOVA<br>
+          <div class="threat-bar bar-high"></div>
+        </div>
+        <div class="skill-vs">🔴 90%</div>
+        <div class="skill-ai threat-high">AutoML, AI analyst report เต็มรูปแบบ ข้อมูลใส่ผลออก 5 นาที</div>
+      </div>
+
+      <div class="ai-row">
+        <div class="skill-human">
+          LP / OR Solver ด้วยมือ<br>
+          <div class="threat-bar bar-high"></div>
+        </div>
+        <div class="skill-vs">🔴 92%</div>
+        <div class="skill-ai threat-high">AI optimize supply chain แบบ real-time, อธิบาย tradeoff เองได้</div>
+      </div>
+
+      <div class="ai-row">
+        <div class="skill-human">
+          เขียน Report / วิจัยเบื้องต้น<br>
+          <div class="threat-bar bar-high"></div>
+        </div>
+        <div class="skill-vs">🔴 85%</div>
+        <div class="skill-ai threat-high">AI เขียน literature review, draft paper, format citations อัตโนมัติ</div>
+      </div>
+
+      <div class="ai-row">
+        <div class="skill-human">
+          Scheduling / Routing<br>
+          <div class="threat-bar bar-high"></div>
+        </div>
+        <div class="skill-vs">🔴 88%</div>
+        <div class="skill-ai threat-high">AI Agent วางแผนการผลิตและ logistics แบบ adaptive real-time</div>
+      </div>
+
+      <!-- MED THREAT -->
+      <div style="font-family:monospace; font-size:10px; color:var(--accent4); letter-spacing:2px; margin:16px 0 10px;">── MEDIUM THREAT ──</div>
+
+      <div class="ai-row">
+        <div class="skill-human">
+          DOE Design วางแผนทดลอง<br>
+          <div class="threat-bar bar-med"></div>
+        </div>
+        <div class="skill-vs">🟡 55%</div>
+        <div class="skill-ai threat-med">AI แนะนำ experimental design ได้ แต่ยังต้องมนุษย์ตัดสินใจ context</div>
+      </div>
+
+      <div class="ai-row">
+        <div class="skill-human">
+          Simulation Model (Arena/Simio)<br>
+          <div class="threat-bar bar-med"></div>
+        </div>
+        <div class="skill-vs">🟡 50%</div>
+        <div class="skill-ai threat-med">AI code simulation ได้แต่ validate ระบบจริงยังต้องวิศวกร</div>
+      </div>
+
+      <div class="ai-row">
+        <div class="skill-human">
+          QC / SPC ในโรงงาน<br>
+          <div class="threat-bar bar-med"></div>
+        </div>
+        <div class="skill-vs">🟡 60%</div>
+        <div class="skill-ai threat-med">Computer Vision + AI ตรวจสอบแทน inspector แล้ว แต่ root cause ยังต้องคน</div>
+      </div>
+
+      <!-- LOW THREAT -->
+      <div style="font-family:monospace; font-size:10px; color:var(--accent3); letter-spacing:2px; margin:16px 0 10px;">── LOW THREAT — AI ทำแทนยาก ──</div>
+
+      <div class="ai-row">
+        <div class="skill-human">
+          Stakeholder Management / Negotiation<br>
+          <div class="threat-bar bar-low"></div>
+        </div>
+        <div class="skill-vs">🟢 15%</div>
+        <div class="skill-ai threat-low">AI ช่วยเตรียมข้อมูลได้ แต่ความสัมพันธ์มนุษย์ยังขาดไม่ได้</div>
+      </div>
+
+      <div class="ai-row">
+        <div class="skill-human">
+          Site Implementation / Gemba Walk<br>
+          <div class="threat-bar bar-low"></div>
+        </div>
+        <div class="skill-vs">🟢 10%</div>
+        <div class="skill-ai threat-low">AI ดูกล้องได้แต่ยังไม่มี embodied presence ในโรงงาน</div>
+      </div>
+
+      <div class="ai-row">
+        <div class="skill-human">
+          Strategic Decision Making<br>
+          <div class="threat-bar bar-low"></div>
+        </div>
+        <div class="skill-vs">🟢 20%</div>
+        <div class="skill-ai threat-low">AI ให้ recommendation แต่ accountability ยังต้องมนุษย์รับผิดชอบ</div>
+      </div>
+
+      <div class="ai-row">
+        <div class="skill-human">
+          Thesis Research + Original Knowledge<br>
+          <div class="threat-bar bar-low"></div>
+        </div>
+        <div class="skill-vs">🟢 25%</div>
+        <div class="skill-ai threat-low">AI ช่วยได้มาก แต่ original contribution ยังต้องมาจากมนุษย์</div>
+      </div>
+    </div>
+
+    <div class="card green">
+      <div class="card-title"><span class="icon">🛡️</span> ทักษะที่ป.โท IE สร้างได้ — AI เข้ามาแทนยาก</div>
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:10px; margin-top:8px;">
+        <div style="padding:10px; background:rgba(57,255,20,0.05); border:1px solid rgba(57,255,20,0.2); border-radius:8px; font-size:12px; color:var(--text);">
+          🧠 <strong style="color:var(--accent3);">Systems Thinking</strong><br>มองภาพรวม วิเคราะห์ trade-off เชิงระบบ
+        </div>
+        <div style="padding:10px; background:rgba(57,255,20,0.05); border:1px solid rgba(57,255,20,0.2); border-radius:8px; font-size:12px; color:var(--text);">
+          🔬 <strong style="color:var(--accent3);">Research Credibility</strong><br>ผล Thesis ที่ Peer-reviewed ได้
+        </div>
+        <div style="padding:10px; background:rgba(57,255,20,0.05); border:1px solid rgba(57,255,20,0.2); border-radius:8px; font-size:12px; color:var(--text);">
+          🤝 <strong style="color:var(--accent3);">Network & Advisor</strong><br>Connection อาจารย์ อุตสาหกรรม
+        </div>
+        <div style="padding:10px; background:rgba(57,255,20,0.05); border:1px solid rgba(57,255,20,0.2); border-radius:8px; font-size:12px; color:var(--text);">
+          🎯 <strong style="color:var(--accent3);">Domain Expertise</strong><br>ความรู้เฉพาะทางที่ prompt AI ได้ถูกต้อง
+        </div>
+        <div style="padding:10px; background:rgba(57,255,20,0.05); border:1px solid rgba(57,255,20,0.2); border-radius:8px; font-size:12px; color:var(--text);">
+          📋 <strong style="color:var(--accent3);">Accountability</strong><br>รับผิดชอบการตัดสินใจระดับองค์กร
+        </div>
+        <div style="padding:10px; background:rgba(57,255,20,0.05); border:1px solid rgba(57,255,20,0.2); border-radius:8px; font-size:12px; color:var(--text);">
+          🏭 <strong style="color:var(--accent3);">Physical World</strong><br>จัดการ Gemba, คนงาน, ความปลอดภัย
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PANEL 3: PRO/CON ===== -->
+  <div class="panel" id="panel-procon">
+    <p class="section-title">// COST-BENEFIT ANALYSIS — วิเคราะห์ตรงๆ</p>
+
+    <div class="grid-2">
+      <!-- PROS -->
+      <div>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+          <span style="font-size:18px;">✅</span>
+          <h3 style="color:var(--accent3); font-size:15px;">ข้อดีของป.โท IE มก.</h3>
+        </div>
+
+        <div class="procon-item">
+          <span class="procon-icon">🎯</span>
+          <div class="procon-content">
+            <h4>เพิ่มระดับเพดานเงินเดือน</h4>
+            <p>ป.โทวิศวกรรมเปิดประตูสู่ตำแหน่งระดับ Senior/Manager เร็วขึ้น 2-3 ปี เทียบกับป.ตรีล้วน โดยเฉพาะใน BOI / EEC zone องค์กรขนาดใหญ่</p>
+          </div>
+        </div>
+
+        <div class="procon-item">
+          <span class="procon-icon">🔬</span>
+          <div class="procon-content">
+            <h4>ความน่าเชื่อถือทางวิชาการ</h4>
+            <p>วิทยานิพนธ์ที่ดีกลายเป็น portfolio ที่ AI ลอกไม่ได้ — เป็นงานวิจัย original ที่มีชื่อในฐานข้อมูลวิชาการ</p>
+          </div>
+        </div>
+
+        <div class="procon-item">
+          <span class="procon-icon">🌐</span>
+          <div class="procon-content">
+            <h4>Network & Human Capital</h4>
+            <p>รู้จักอาจารย์ที่เชี่ยวชาญ, รุ่นพี่ใน industry, เพื่อนร่วม cohort ที่ทำงานอยู่แล้ว — เส้นสายที่ AI ให้ไม่ได้</p>
+          </div>
+        </div>
+
+        <div class="procon-item">
+          <span class="procon-icon">🏛️</span>
+          <div class="procon-content">
+            <h4>เปิดทางสายราชการ/รัฐวิสาหกิจ</h4>
+            <p>ตำแหน่งนักวิจัย, อาจารย์มหาวิทยาลัย, EECi/NECTEC/NSTDA ล้วนกำหนดวุฒิป.โทขึ้นไป</p>
+          </div>
+        </div>
+
+        <div class="procon-item">
+          <span class="procon-icon">🤖</span>
+          <div class="procon-content">
+            <h4>ใช้ AI ได้อย่างมีประสิทธิภาพกว่า</h4>
+            <p>คนที่เข้าใจ OR, Statistics, Simulation จริง จะ prompt AI ได้แม่นยำกว่า และตรวจสอบผลได้ว่าถูกหรือผิด</p>
+          </div>
+        </div>
+
+        <div class="procon-item">
+          <span class="procon-icon">🇹🇭</span>
+          <div class="procon-content">
+            <h4>มก. ชื่อเสียงดี — EEC Context</h4>
+            <p>มก. เป็นมหาวิทยาลัยที่นายจ้างไทยรู้จักดี โดยเฉพาะ BOI/EEC/Amata ที่คุณทำงานอยู่แวดล้อม</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONS -->
+      <div>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+          <span style="font-size:18px;">⚠️</span>
+          <h3 style="color:var(--accent2); font-size:15px;">ข้อเสียและความเสี่ยง</h3>
+        </div>
+
+        <div class="procon-item">
+          <span class="procon-icon">⏰</span>
+          <div class="procon-content">
+            <h4>เสียเวลา 2 ปีในยุค AI เคลื่อนตัวเร็ว</h4>
+            <p>2 ปีในโลก AI = นาน มากในบางสาย ทักษะที่เรียนปีแรกอาจ obsolete ก่อนจบ — ต้องเรียนรู้ตลอดเวลาควบคู่</p>
+          </div>
+        </div>
+
+        <div class="procon-item">
+          <span class="procon-icon">💰</span>
+          <div class="procon-content">
+            <h4>Opportunity Cost สูง</h4>
+            <p>ค่าเรียน + เวลา 2 ปี เทียบกับการ upskill ด้วย certifications (AWS, GCP, PMP) + ประสบการณ์ทำงาน อาจได้ผลตอบแทนเทียบกัน</p>
+          </div>
+        </div>
+
+        <div class="procon-item">
+          <span class="procon-icon">📉</span>
+          <div class="procon-content">
+            <h4>Premium เงินเดือนลดลงเรื่อยๆ</h4>
+            <p>ก่อนหน้านี้ ป.โท = +20-30% เงินเดือน แต่ปัจจุบัน skill-based hiring เพิ่มขึ้น ป.ตรีที่ทำได้จริงแข่งสูสี</p>
+          </div>
+        </div>
+
+        <div class="procon-item">
+          <span class="procon-icon">😮‍💨</span>
+          <div class="procon-content">
+            <h4>Thesis Stress สูง โดยเฉพาะแผน ก</h4>
+            <p>งานวิจัยต้องใช้เวลา ความอดทน และอาจารย์ที่ปรึกษาที่ match กัน — หลายคนติดอยู่ 3-4 ปีกว่าจะจบ</p>
+          </div>
+        </div>
+
+        <div class="procon-item">
+          <span class="procon-icon">🏭</span>
+          <div class="procon-content">
+            <h4>บางสายงานไม่ได้ให้คุณค่าป.โทมากนัก</h4>
+            <p>Startup, Tech company, SME ส่วนใหญ่ดู portfolio และทำได้จริงมากกว่าวุฒิการศึกษา</p>
+          </div>
+        </div>
+
+        <div class="procon-item">
+          <span class="procon-icon">🎓</span>
+          <div class="procon-content">
+            <h4>หลักสูตรอาจ "ตามไม่ทัน" AI</h4>
+            <p>มหาวิทยาลัยปรับหลักสูตรช้ากว่า industry วิชา Data Analytics ที่สอนอาจยังเป็น method ที่ AI ทำได้ดีกว่าแล้ว</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PANEL 4: JOBS ===== -->
+  <div class="panel" id="panel-jobs">
+    <p class="section-title">// JOB MARKET INTELLIGENCE — ป.โท IE กับตลาดงาน</p>
+
+    <div style="margin-bottom:20px;">
+      <h3 style="color:#fff; margin-bottom:12px; font-size:15px;">สายงานที่ ป.โท IE เปิดประตูได้ชัดเจน</h3>
+
+      <div class="job-tier">
+        <span class="tier-label tier-a">ได้เปรียบชัด</span>
+        <div class="tier-info">
+          <h4>นักวิจัย / Researcher (NSTDA, EECi, BOI)</h4>
+          <p>กำหนดป.โทขึ้นไปอย่างชัดเจน, เงินเดือนดี, Stability สูง</p>
+        </div>
+        <div class="tier-salary">35,000–55,000 ฿<br><span style="color:var(--muted); font-size:10px;">ทดลองงาน</span></div>
+      </div>
+
+      <div class="job-tier">
+        <span class="tier-label tier-a">ได้เปรียบชัด</span>
+        <div class="tier-info">
+          <h4>อาจารย์มหาวิทยาลัย / Lecturer</h4>
+          <p>ป.โทขั้นต่ำ, สาย tenure track มักต้องป.เอกต่อ แต่จุดเริ่มต้นที่ดี</p>
+        </div>
+        <div class="tier-salary">30,000–45,000 ฿<br><span style="color:var(--muted); font-size:10px;">อาจารย์ใหม่</span></div>
+      </div>
+
+      <div class="job-tier">
+        <span class="tier-label tier-b">ได้เปรียบพอควร</span>
+        <div class="tier-info">
+          <h4>Industrial Engineer / IE Manager (MNC)</h4>
+          <p>บริษัทญี่ปุ่น, ยุโรป, อเมริกาในนิคม EEC มักให้ Premium ป.โท</p>
+        </div>
+        <div class="tier-salary">45,000–80,000 ฿<br><span style="color:var(--muted); font-size:10px;">ระดับ Senior</span></div>
+      </div>
+
+      <div class="job-tier">
+        <span class="tier-label tier-b">ได้เปรียบพอควร</span>
+        <div class="tier-info">
+          <h4>Supply Chain / Logistics Analyst (BOI)</h4>
+          <p>ตำแหน่งวิเคราะห์ระดับสูงใน EEC Zone หรือ Government Policy</p>
+        </div>
+        <div class="tier-salary">40,000–65,000 ฿<br><span style="color:var(--muted); font-size:10px;">มีประสบการณ์</span></div>
+      </div>
+
+      <div class="job-tier">
+        <span class="tier-label tier-b">ได้เปรียบพอควร</span>
+        <div class="tier-info">
+          <h4>Management Consultant (Big 4 / Strategy)</h4>
+          <p>ป.โทวิศวกรรมจากมหาวิทยาลัยชื่อดังเป็นที่นิยม แต่ต้องมี soft skills สูงด้วย</p>
+        </div>
+        <div class="tier-salary">50,000–90,000 ฿</div>
+      </div>
+
+      <div class="job-tier">
+        <span class="tier-label tier-c">ป.โทไม่ได้ช่วยมาก</span>
+        <div class="tier-info">
+          <h4>Startup / Tech Product / Data Engineer</h4>
+          <p>วัด GitHub, Portfolio, Skill จริง — ป.โทไม่ได้เพิ่ม value เท่าไหร่ในสาย tech</p>
+        </div>
+        <div class="tier-salary">40,000–120,000 ฿<br><span style="color:var(--muted); font-size:10px;">ขึ้นกับ skill ล้วน</span></div>
+      </div>
+    </div>
+
+    <div class="card gold">
+      <div class="card-title"><span class="icon">🌏</span> EEC Context — ตรงกับงานที่คุณทำอยู่</div>
+      <p style="font-size:13px; color:var(--text); line-height:1.8;">
+        สำหรับสายงาน BOI investment intelligence, EECi/Wangchan Valley, Data Center analysis — 
+        <span class="highlight">ป.โท IE เพิ่มความน่าเชื่อถือ</span>ในการนำเสนอต่อผู้บริหาร นักลงทุน และหน่วยงานรัฐ
+        ตำแหน่งอย่าง <span class="highlight">Investment Analyst, Policy Researcher, EEC Zone Coordinator</span> 
+        มักระบุวุฒิป.โทขึ้นไปสำหรับ Band เงินเดือนสูง
+      </p>
+    </div>
+
+    <!-- Timeline -->
+    <div class="card" style="margin-top:16px;">
+      <div class="card-title"><span class="icon">🗓️</span> เส้นทางเวลาหากเริ่มป.โทปี 2025</div>
+      <div class="timeline" style="margin-top:12px;">
+        <div class="tl-item">
+          <div class="tl-year">2025 — เริ่มเรียน</div>
+          <div class="tl-content">สมัคร, เตรียมตัว, เรียนวิชาบังคับ, หา thesis topic ที่ match งานจริง (เช่น EEC investment model, Wangchan geotechnical optimization)</div>
+        </div>
+        <div class="tl-item gold-point">
+          <div class="tl-year">2026 — ช่วงวิจัย</div>
+          <div class="tl-content">เริ่ม thesis research, ประยุกต์ AI tools ในงานวิจัย, publish paper ถ้าทำได้ — ปีนี้ AI เร่งขึ้นมาก ต้องปรับ thesis topic ให้ AI-proof</div>
+        </div>
+        <div class="tl-item danger-point">
+          <div class="tl-year">2027 — จบป.โท</div>
+          <div class="tl-content">ถ้าจบตามกำหนด: 2 ปีพร้อม research portfolio + network + degree — แต่โลก AI จะเปลี่ยนมากใน 2 ปีนี้</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2027–2028 — ROI จริง</div>
+          <div class="tl-content">เห็น return ชัดถ้าเดินสาย Research / Consulting / Academic — ถ้าสาย industry อาจต้องรอ 3-5 ปี</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PANEL 5: VERDICT ===== -->
+  <div class="panel" id="panel-verdict">
+    <p class="section-title">// STRATEGIC RECOMMENDATION — คำแนะนำตรงๆ ตามบริบทคุณ</p>
+
+    <div class="verdict-box" style="margin-bottom:20px;">
+      <h3>🎯 สรุปภาพรวม</h3>
+      <p>
+        ป.โท IE มก. <span class="highlight">ยังคุ้มค่า</span>ในบริบทของคุณ — แต่คุ้มค่า <span class="highlight">เฉพาะเมื่อเลือกถูกแบบ, ทำ Thesis ที่ตรงงานจริง, และไม่หยุด upskill AI ขณะเรียน</span> 
+        สิ่งที่น่ากังวลคือหลักสูตรอาจ "ตามไม่ทัน" AI แต่ degree + network + research skills นั้นยังเป็น signal ที่ตลาดงาน EEC/BOI ให้ value อยู่
+      </p>
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <h3 style="color:#fff; margin-bottom:14px; font-size:15px;">คำแนะนำเฉพาะสถานการณ์</h3>
+
+      <div class="rec-box">
+        <div class="rec-header">
+          <span class="rec-num">01</span>
+          <span class="rec-title">เลือก <span style="color:var(--accent);">แผน ก ก.2</span> และเลือก Thesis Topic ที่ต่อยอดงานจริงได้</span>
+        </div>
+        <p>
+          งานที่คุณทำอยู่แล้ว — EEC investment analysis, BOI data dashboard, Geotechnical modeling — 
+          สามารถแปลงเป็น Thesis ที่ <span class="highlight">มีคุณค่าทางวิชาการและใช้งานได้จริง</span> พร้อมกัน 
+          เช่น "Multi-criteria Decision Framework for BOI Zone Selection in EEC using GIS" หรือ 
+          "Predictive Analytics for Data Center Site Feasibility in Eastern Thailand"
+        </p>
+      </div>
+
+      <div class="rec-box">
+        <div class="rec-header">
+          <span class="rec-num">02</span>
+          <span class="rec-title">ถ้าทำงานอยู่ — พิจารณา <span style="color:#c084fc;">EMP (ภาคพิเศษ)</span> หรือ <span style="color:var(--accent4);">นานาชาติ</span></span>
+        </div>
+        <p>
+          หลักสูตร EMP (Engineering Management Program) เรียนเสาร์-อาทิตย์ ไม่ต้องลาออกจากงาน 
+          เหมาะถ้าต้องการ degree + network โดยไม่เสีย income ส่วน International Program 
+          ดีถ้าต้องการ <span class="highlight">เพิ่ม credential สำหรับงานต่างชาติ/นักลงทุนต่างชาติ</span> ซึ่งตรงกับ EEC context
+        </p>
+      </div>
+
+      <div class="rec-box">
+        <div class="rec-header">
+          <span class="rec-num">03</span>
+          <span class="rec-title">เรียนป.โทพร้อม <span style="color:var(--accent3);">Stack AI skills</span> ไปด้วยเสมอ</span>
+        </div>
+        <p>
+          ป.โท IE สอนทฤษฎีที่ดี แต่ <span class="danger">อย่าหยุด upskill AI</span> ขณะเรียน 
+          คนที่จะ win ในตลาดงาน 2027–2028 คือ "วิศวกรที่มี degree + รู้ OR/Statistics + 
+          ใช้ AI tools ได้จริง" ไม่ใช่แค่คนที่มีป.โทอย่างเดียว หรือรู้ AI อย่างเดียว
+        </p>
+      </div>
+
+      <div class="rec-box">
+        <div class="rec-header">
+          <span class="rec-num">04</span>
+          <span class="rec-title"><span class="danger">ระวัง:</span> อย่าเรียนป.โทเพราะ "ไม่รู้จะทำอะไร"</span>
+        </div>
+        <p>
+          ป.โทที่ดีต้องมาจาก <span class="highlight">เป้าหมายชัดเจน</span> ว่าจะทำอะไรหลังจบ 
+          ถ้าเป้าหมายคือ BOI/EECi researcher, Academic, หรือ Strategic consultant — ป.โทตอบโจทย์ 
+          แต่ถ้าเป้าหมายคือ startup founder หรือ tech engineer ระดับสูง — <span class="danger">อาจเสียเวลา 2 ปี</span>ที่ควรสะสม portfolio จริงมากกว่า
+        </p>
+      </div>
+
+      <div class="rec-box" style="border-left:3px solid var(--accent3);">
+        <div class="rec-header">
+          <span class="rec-num" style="color:var(--accent3);">05</span>
+          <span class="rec-title"><span class="safe">Alternative:</span> ถ้าไม่อยากทำป.โทตอนนี้</span>
+        </div>
+        <p>
+          ทางเลือกที่คุ้มค่าในระยะสั้น: <span class="highlight">PMP + AWS/GCP cert + publish 1-2 conference paper</span> 
+          ใน EEC/BOI domain — ใช้เวลา 6-12 เดือน เปิดประตูตำแหน่งหลายแห่ง 
+          แล้วค่อยประเมินใหม่ว่าป.โทจำเป็นจริงๆ ไหมใน context ที่ชัดขึ้น
+        </p>
+      </div>
+    </div>
+
+    <!-- Final Matrix -->
+    <div class="card purple">
+      <div class="card-title"><span class="icon">📊</span> Decision Matrix — ควรทำป.โทไหม?</div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%; border-collapse:collapse; font-size:12px; margin-top:8px;">
+          <thead>
+            <tr style="background:rgba(168,85,247,0.15);">
+              <th style="padding:8px 12px; text-align:left; color:#c084fc; font-weight:600; border-bottom:1px solid var(--border);">เป้าหมายของคุณ</th>
+              <th style="padding:8px 12px; text-align:center; color:#c084fc; font-weight:600; border-bottom:1px solid var(--border);">ป.โท IE</th>
+              <th style="padding:8px 12px; text-align:center; color:#c084fc; font-weight:600; border-bottom:1px solid var(--border);">Certifications</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:8px 12px; color:var(--text);">นักวิจัย EECi / BOI Policy</td>
+              <td style="padding:8px 12px; text-align:center; color:var(--accent3);">✅ แนะนำมาก</td>
+              <td style="padding:8px 12px; text-align:center; color:var(--muted);">—</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:8px 12px; color:var(--text);">Consultant / Investment Analyst</td>
+              <td style="padding:8px 12px; text-align:center; color:var(--accent3);">✅ แนะนำ</td>
+              <td style="padding:8px 12px; text-align:center; color:var(--accent4);">⚡ ควบคู่</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:8px 12px; color:var(--text);">IE Manager / Plant Manager</td>
+              <td style="padding:8px 12px; text-align:center; color:var(--accent4);">⚡ ขึ้นอยู่กับบริษัท</td>
+              <td style="padding:8px 12px; text-align:center; color:var(--accent4);">⚡ ทำคู่กัน</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:8px 12px; color:var(--text);">Data/Tech Engineer ระดับสูง</td>
+              <td style="padding:8px 12px; text-align:center; color:var(--accent2);">❌ ไม่จำเป็น</td>
+              <td style="padding:8px 12px; text-align:center; color:var(--accent3);">✅ ทำ cert แทน</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 12px; color:var(--text);">Startup / Founder</td>
+              <td style="padding:8px 12px; text-align:center; color:var(--accent2);">❌ เสียเวลา</td>
+              <td style="padding:8px 12px; text-align:center; color:var(--accent2);">❌ ทำ product แทน</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div style="text-align:center; padding:24px; font-family:monospace; font-size:10px; color:var(--muted); border-top:1px solid var(--border); margin-top:16px;">
+  <span style="color:var(--accent);">IE KU MASTER ANALYSIS</span> · ข้อมูลหลักสูตรจาก ie.eng.ku.ac.th · วิเคราะห์ AI threat ณ พ.ค. 2569
+</div>
+
+<script>
+  function showPanel(id) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
